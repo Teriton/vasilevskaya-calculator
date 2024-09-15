@@ -190,11 +190,15 @@ func (r *Resistor) countFormOfResistor() Form {
 	}
 }
 
-func CalculateAndSetMaterial(arrOfRes []Resistor) {
-	RoOpt := CalculateRoOpt(arrOfRes)
-	mat := CalculateMaterial(RoOpt)
-
+func SetMaterialsForResistors(arrOfRes []Resistor, mat material) {
 	for i := range arrOfRes {
 		(arrOfRes)[i].SetMaterial(mat)
 	}
+}
+
+func CalculateAndSetMaterial(arrOfRes []Resistor) {
+	RoOpt := CalculateRoOpt(arrOfRes)
+	mat := CalculateMaterial(RoOpt)
+	SetMaterialsForResistors(arrOfRes, mat)
+
 }

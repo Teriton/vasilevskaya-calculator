@@ -2,6 +2,7 @@ package main
 
 import (
 	"example/main/components/resistor"
+	consoleoutput "example/main/consoleOutput"
 	"example/main/environment"
 	"fmt"
 )
@@ -28,7 +29,7 @@ func main() {
 		*resistor.NewResistor(6000.0, 10.0, 0.040, resistor.GetHollowMaterial(), env),
 		*resistor.NewResistor(1000.0, 20.0, 0.010, resistor.GetHollowMaterial(), env),
 		*resistor.NewResistor(120000.0, 20.0, 0.051, resistor.GetHollowMaterial(), env),
-		*resistor.NewResistor(130000.0, 10.0, 0.090, resistor.GetHollowMaterial(), env),
+		*resistor.NewResistor(130000.0, 2.0, 0.090, resistor.GetHollowMaterial(), env),
 		*resistor.NewResistor(1000000.0, 10.0, 0.012, resistor.GetHollowMaterial(), env),
 		*resistor.NewResistor(500000.0, 20.0, 0.032, resistor.GetHollowMaterial(), env),
 		*resistor.NewResistor(12000.0, 20.0, 0.045, resistor.GetHollowMaterial(), env),
@@ -75,6 +76,15 @@ func main() {
 		fmt.Println("ЦКП bdelta: ", j.GetBdeltaCCP())
 		fmt.Println("======================")
 	}
+
+	consoleoutput.RenderTableOfResistors(arrRes)
+
+	consoleoutput.RenderMaterialsCheck(resistor.CheckAllMaterials(arrRes))
+	for _, mat := range resistor.GetMaterials() {
+		resistor.SetMaterialsForResistors(arrRes, mat)
+		consoleoutput.RenderTableOfResistors(arrRes)
+	}
+
 	//server.RunServer()
 
 }

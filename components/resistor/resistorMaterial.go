@@ -159,6 +159,46 @@ func GetMaterials() []material {
 	}
 }
 
+func (m *material) GetName() string {
+	return m.name
+}
+
+func (m *material) GetSquareResistance() float64 {
+	return m.squareResistance
+}
+
+func (m *material) GetPermissibleSpecificPowerDissipation() float64 {
+	return m.permissibleSpecificPowerDissipation
+}
+
+func (m *material) GetTemperatureCoefficientOfResistance() float64 {
+	return m.temperatureCoefficientOfResistance
+}
+
+func (m *material) GetSenescence() float64 {
+	return m.senescence
+}
+
+type CheckMaterial struct {
+	Material     material
+	GammaRdeltas []float64
+}
+
+func CheckAllMaterials(arrOfRes []Resistor) []CheckMaterial {
+	var arrOfCheckedMaterials []CheckMaterial
+	materials := GetMaterials()
+	for _, mat := range materials {
+		var currentrlyCheckingMaterial CheckMaterial
+		currentrlyCheckingMaterial.Material = mat
+		for _, res := range arrOfRes {
+			res.SetMaterial(mat)
+			currentrlyCheckingMaterial.GammaRdeltas = append(currentrlyCheckingMaterial.GammaRdeltas, res.gammaRdelta)
+		}
+		arrOfCheckedMaterials = append(arrOfCheckedMaterials, currentrlyCheckingMaterial)
+	}
+	return arrOfCheckedMaterials
+}
+
 func CalculateRoOpt(arrOfMat []Resistor) float64 {
 	var sum, antisum float64
 
