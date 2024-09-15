@@ -75,7 +75,7 @@ func countArrOfRes(c *gin.Context) {
 		outputData = append(outputData, OutputData{
 			FormFactor:  j.GetFromFactor(),
 			Form:        string(j.GetFormOfResistor()),
-			Material:    j.GetMaterial(),
+			Material:    j.GetMaterial().GetName(),
 			GammaRdelta: j.GetGammaRdelta(),
 			RoOpt:       resistor.CalculateRoOpt(arrRes),
 		})

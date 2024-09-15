@@ -13,7 +13,11 @@ func RenderTableOfResistors(arrOfRes []resistor.Resistor) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	if len(arrOfRes) > 0 {
-		t.AppendHeader(table.Row{"", "Материал:" + arrOfRes[0].GetMaterial(), "Roopt: " + strconv.FormatFloat(resistor.CalculateRoOpt(arrOfRes), 'g', 10, 64)})
+		t.AppendHeader(table.Row{"",
+			"Материал:" + arrOfRes[0].GetMaterial().GetName(),
+			"Roкв: " + strconv.FormatFloat(arrOfRes[0].GetMaterial().GetSquareResistance(), 'g', 10, 64),
+			"Roopt: " + strconv.FormatFloat(resistor.CalculateRoOpt(arrOfRes), 'g', 10, 64),
+		})
 	}
 	t.AppendHeader(table.Row{"#", "Сопротивление", "Коэффициент формы", "gammaRdelta", "Форма", "Ширина", "Длинна"})
 	for i, j := range arrOfRes {
@@ -25,6 +29,39 @@ func RenderTableOfResistors(arrOfRes []resistor.Resistor) {
 			j.GetFormOfResistor(),
 			j.GetWidth(),
 			j.GetHeight(),
+		})
+	}
+	t.SetStyle(table.StyleColoredBlackOnYellowWhite)
+	t.AppendSeparator()
+	t.Render()
+}
+
+func RenderTableOfResistorsPractos1(arrOfRes []resistor.Resistor) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	// if len(arrOfRes) > 0 {
+	// 	t.AppendHeader(table.Row{"",
+	// 		"Материал:" + arrOfRes[0].GetMaterial().GetName(),
+	// 		"Roкв: " + strconv.FormatFloat(arrOfRes[0].GetMaterial().GetSquareResistance(), 'g', 10, 64),
+	// 		"Roopt: " + strconv.FormatFloat(resistor.CalculateRoOpt(arrOfRes), 'g', 10, 64),
+	// 	})
+	// }
+	t.AppendHeader(table.Row{"#", "R,Ом", "P,Вт", "gammaR,%", "кф", "bp,мм", "bdelta,мм", "bmax,мм", "b,мм", "l,мм", "L,мм", "B,мм", "n"})
+	for i, j := range arrOfRes {
+		t.AppendRow(table.Row{
+			i + 1,
+			j.GetResistance(),
+			j.GetPower(),
+			j.GetTolerance(),
+			j.GetFromFactor(),
+			j.GetBp(),
+			j.GetBdelta(),
+			j.GetWidth(),
+			j.GetWidth(),
+			j.GetHeight(),
+			j.GetXlengthMeander(),
+			j.GetYlengthMeander(),
+			j.GetNumberOfLinks(),
 		})
 	}
 	t.SetStyle(table.StyleColoredBlackOnYellowWhite)

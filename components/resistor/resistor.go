@@ -40,6 +40,19 @@ type Resistor struct {
 	// CCP
 	bpCCP     float64
 	bdeltaCCP float64
+
+	// Trim
+	gammaRdeltaTrim float64
+	gammaR          float64
+	mOfTrim         float64
+	lnTrim          float64
+	loTrim          float64
+	rdashminTrim    float64
+	ltune           float64
+	deltaRTrim      float64
+	deltaLrTrim     float64
+	deltaLdashTrim  float64
+	deltaLTrim      float64
 }
 
 func NewResistor(resistance float64, tolerance float64, power float64, material material, enviroment *environment.Environment) *Resistor {
@@ -72,6 +85,14 @@ func (r *Resistor) GetGammaRt() float64 {
 	return r.gammaRt
 }
 
+func (r *Resistor) GetTolerance() float64 {
+	return r.tolerance
+}
+
+func (r *Resistor) GetPower() float64 {
+	return r.power
+}
+
 func (r *Resistor) GetFormOfResistor() Form {
 	return r.formOfResistor
 }
@@ -80,8 +101,8 @@ func (r *Resistor) GetGammaRdelta() float64 {
 	return r.gammaRdelta
 }
 
-func (r *Resistor) GetMaterial() string {
-	return r.material.name
+func (r *Resistor) GetMaterial() *material {
+	return &r.material
 }
 
 func (r *Resistor) GetBp() float64 {
@@ -132,6 +153,47 @@ func (r *Resistor) GetBdeltaCCP() float64 {
 	return r.bdeltaCCP
 }
 
+func (r *Resistor) GetGammaRdeltaTrim() float64 {
+	return r.gammaRdeltaTrim
+}
+
+func (r *Resistor) GetGammaR() float64 {
+	return r.gammaR
+}
+
+func (r *Resistor) GetMOfTrim() float64 {
+	return r.mOfTrim
+}
+
+func (r *Resistor) GetlnTrim() float64 {
+	return r.lnTrim
+}
+
+func (r *Resistor) GetloTrim() float64 {
+	return r.loTrim
+}
+
+func (r *Resistor) GetrdashminTrim() float64 {
+	return r.rdashminTrim
+}
+
+func (r *Resistor) GetLtune() float64 {
+	return r.ltune
+}
+func (r *Resistor) GetDeltaRTrim() float64 {
+	return r.deltaRTrim
+}
+func (r *Resistor) GetDeltaLrTrim() float64 {
+	return r.deltaLrTrim
+}
+
+func (r *Resistor) GetDeltaLdashTrim() float64 {
+	return r.deltaLdashTrim
+}
+func (r *Resistor) GetDeltaLTrim() float64 {
+	return r.deltaLTrim
+}
+
 // Setters
 
 func (r *Resistor) SetMaterial(material material) {
@@ -154,15 +216,15 @@ func (r *Resistor) autoCalculateInit() {
 	r.ldelta = r.ldeltaCount()
 	r.height = r.lCount()
 	// Stripes
-	a, b := r.GetWidth()*2, r.GetWidth()
+	a, b := r.GetWidth(), r.GetWidth()
 	r.stripesXlength = CountXstripes(a, b, r.GetFromFactor())
 	// Meander
-	r.numberOfLinks = CountNumberOfLinks(a, b, r.GetHeight())
-	r.meanderXLength = CountXlengthMeander(a, b, r.numberOfLinks)
-	r.meanderYLength = CountYlengthMeander(a, r.GetHeight(), r.GetNumberOfLinks())
+	r.InitMeander(a, b)
 	// CCP
 	r.bpCCP = CountBpCCP(r.resistance, r.power, r.material)
 	r.bdeltaCCP = CountBdeltaCCP(0.01, 0.01, 1, r.tolerance, *r.environment)
+	// Trim
+	r.InitTrim(0.01)
 }
 
 func (r *Resistor) countFormFactor() float64 {
