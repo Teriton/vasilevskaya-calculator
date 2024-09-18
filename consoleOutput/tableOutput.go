@@ -95,7 +95,7 @@ func RenderMaterialsCheck(arrOfCheckedMaterials []resistor.CheckMaterial) {
 		var count int
 		for i, j := range row {
 			// fmt.Printf("%d %s\n", i, j)
-			if i > 6 {
+			if i > 5 {
 				num, err := strconv.ParseFloat(j.(string), 32)
 				if err != nil {
 					break

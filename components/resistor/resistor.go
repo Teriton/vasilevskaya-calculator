@@ -49,10 +49,12 @@ type Resistor struct {
 	loTrim          float64
 	rdashminTrim    float64
 	ltune           float64
-	deltaRTrim      float64
+	deltarTrim      float64
 	deltaLrTrim     float64
 	deltaLdashTrim  float64
-	deltaLTrim      float64
+	deltaRTrim      float64
+	lpodg           float64
+	lsum            float64
 }
 
 func NewResistor(resistance float64, tolerance float64, power float64, material material, enviroment *environment.Environment) *Resistor {
@@ -173,15 +175,15 @@ func (r *Resistor) GetloTrim() float64 {
 	return r.loTrim
 }
 
-func (r *Resistor) GetrdashminTrim() float64 {
+func (r *Resistor) GetRdashminTrim() float64 {
 	return r.rdashminTrim
 }
 
 func (r *Resistor) GetLtune() float64 {
 	return r.ltune
 }
-func (r *Resistor) GetDeltaRTrim() float64 {
-	return r.deltaRTrim
+func (r *Resistor) GetDeltarTrim() float64 {
+	return r.deltarTrim
 }
 func (r *Resistor) GetDeltaLrTrim() float64 {
 	return r.deltaLrTrim
@@ -190,8 +192,15 @@ func (r *Resistor) GetDeltaLrTrim() float64 {
 func (r *Resistor) GetDeltaLdashTrim() float64 {
 	return r.deltaLdashTrim
 }
-func (r *Resistor) GetDeltaLTrim() float64 {
-	return r.deltaLTrim
+func (r *Resistor) GetDeltaRTrim() float64 {
+	return r.deltaRTrim
+}
+
+func (r *Resistor) GetLpodg() float64 {
+	return r.lpodg
+}
+func (r *Resistor) GetLsum() float64 {
+	return r.lsum
 }
 
 // Setters
