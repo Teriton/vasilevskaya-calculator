@@ -2,7 +2,6 @@ package resistor
 
 import (
 	"example/main/environment"
-	"fmt"
 	"math"
 )
 
@@ -12,7 +11,7 @@ func (r *Resistor) InitTrim(bdelta float64) {
 	r.mOfTrim = CalculateMofTrim(r.gammaR, r.gammaRdeltaTrim)
 	bmax := r.width + r.environment.GetDeltab()
 	bmin := r.width - r.environment.GetDeltab()
-	lmin := r.height - r.environment.GetDeltal()
+	// lmin := r.height - r.environment.GetDeltal()
 	rokvmax := r.environment.GetGammaRokv()*0.01*r.material.squareResistance + r.material.squareResistance
 	rokvmin := r.material.squareResistance - r.environment.GetGammaRokv()*0.01*r.material.squareResistance
 	// rmax := r.resistance + r.resistance*r.gammaR*0.01
@@ -32,18 +31,18 @@ func (r *Resistor) InitTrim(bdelta float64) {
 	r.lsum = CalculateLsum(r.lnTrim, r.lpodg, r.mOfTrim)
 
 	// NewWay
-	gammakf := CalculateGammaKf(r.height, r.width, r.environment.GetDeltal(), r.environment.GetDeltab())
-	n := CalculateNTrim(gammakf, r.environment.GetGammaRokv(), r.tolerance, r.material.senescence)
-	if r.resistance == 130000.0 {
-		fmt.Println("bmax: ", bmax)
-		fmt.Println("bmin: ", bmin)
-		fmt.Println("lmin: ", lmin)
-		fmt.Println("rokvmax: ", rokvmax)
-		fmt.Println("rokvmin: ", rokvmin)
-		fmt.Println("rmax: ", rmax)
-		fmt.Println("rmin: ", rmin)
-		fmt.Println(gammakf, n)
-	}
+	r.gammakf = CalculateGammaKf(r.height, r.width, r.environment.GetDeltal(), r.environment.GetDeltab())
+	// n := CalculateNTrim(r.gammakf, r.environment.GetGammaRokv(), r.tolerance, r.material.senescence)
+	// if r.resistance == 130000.0 {
+	// 	fmt.Println("bmax: ", bmax)
+	// 	fmt.Println("bmin: ", bmin)
+	// 	fmt.Println("lmin: ", lmin)
+	// 	fmt.Println("rokvmax: ", rokvmax)
+	// 	fmt.Println("rokvmin: ", rokvmin)
+	// 	fmt.Println("rmax: ", rmax)
+	// 	fmt.Println("rmin: ", rmin)
+	// 	fmt.Println(gammakf, n)
+	// }
 }
 
 func CalculateGammaR(mat material, gammaRdeltaTrim float64, env environment.Environment, gammaRt float64) float64 {

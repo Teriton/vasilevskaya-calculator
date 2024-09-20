@@ -55,6 +55,7 @@ type Resistor struct {
 	deltaRTrim      float64
 	lpodg           float64
 	lsum            float64
+	gammakf         float64
 }
 
 func NewResistor(resistance float64, tolerance float64, power float64, material material, enviroment *environment.Environment) *Resistor {
@@ -201,6 +202,9 @@ func (r *Resistor) GetLpodg() float64 {
 }
 func (r *Resistor) GetLsum() float64 {
 	return r.lsum
+}
+func (r *Resistor) GetGammakf() float64 {
+	return r.gammakf
 }
 
 // Setters

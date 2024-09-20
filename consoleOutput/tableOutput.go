@@ -118,3 +118,25 @@ func RenderMaterialsCheck(arrOfCheckedMaterials []resistor.CheckMaterial) {
 	t.AppendSeparator()
 	t.Render()
 }
+
+func PodgResistorPrint(res *resistor.Resistor) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Сопротивление", "Точность", "Мощность", "Общая длинна", "lподг", "lрег", "m", "Rсекции", "Rmin"})
+	t.AppendRow(
+		table.Row{
+			res.GetResistance(),
+			res.GetTolerance(),
+			res.GetPower(),
+			res.GetLsum(),
+			res.GetLpodg(),
+			res.GetLtune(),
+			res.GetMOfTrim(),
+			res.GetDeltaRTrim(),
+			res.GetRdashminTrim(),
+		},
+	)
+	t.SetStyle(table.StyleColoredBright)
+	t.AppendSeparator()
+	t.Render()
+}
