@@ -88,7 +88,7 @@ func GetMaterials() []material {
 		},
 		{
 			name:                                "Сплав 2310", // 9
-			squareResistance:                    30000.0,
+			squareResistance:                    50000.0,
 			permissibleSpecificPowerDissipation: 5.0,
 			temperatureCoefficientOfResistance:  12.0,
 			senescence:                          2,

@@ -217,10 +217,10 @@ func (r *Resistor) SetMaterial(material material) {
 // Calculations
 
 func (r *Resistor) autoCalculateInit() {
-	r.formFactor = r.countFormFactor()
-	r.gammaRt = r.countGammaRt()
-	r.gammaRdelta = r.countGammaRDelta()
-	r.formOfResistor = r.countFormOfResistor()
+	r.formFactor = CountFormFactor(r.resistance, r.material.squareResistance)
+	r.gammaRt = CountGammaRt(r.material.temperatureCoefficientOfResistance, r.environment.GetTemperature())
+	r.gammaRdelta = CountGammaRDelta(r.tolerance, r.material.squareResistance, r.environment.GetGammaRcontact(), r.material.senescence, r.gammaRt)
+	r.formOfResistor = CountFormOfResistor(r.formFactor)
 	// Rectangle
 	r.bp = r.bpCount()
 	r.bdelta = r.bdeltaCount()
@@ -240,25 +240,25 @@ func (r *Resistor) autoCalculateInit() {
 	r.InitTrim(0.01)
 }
 
-func (r *Resistor) countFormFactor() float64 {
-	return r.resistance / r.material.squareResistance
+func CountFormFactor(resistance float64, squareResistance float64) float64 {
+	return resistance / squareResistance
 }
 
-func (r *Resistor) countGammaRDelta() float64 {
-	return r.tolerance - (r.environment.GetGammaRokv() + r.environment.GetGammaRcontact() + r.material.senescence + r.gammaRt)
+func CountGammaRDelta(tolerance float64, gammaRokv float64, gammaRcontact float64, senescence float64, gammaRt float64) float64 {
+	return tolerance - (gammaRokv + gammaRcontact + senescence + gammaRt)
 }
 
-func (r *Resistor) countGammaRt() float64 {
-	return math.Abs((r.material.temperatureCoefficientOfResistance * math.Pow(10, -4) * (r.environment.GetTemperature() - 20)) * 100)
+func CountGammaRt(tkr float64, temperature float64) float64 {
+	return math.Abs((tkr * math.Pow(10, -4) * (temperature - 20)) * 100)
 }
 
-func (r *Resistor) countFormOfResistor() Form {
+func CountFormOfResistor(formFactor float64) Form {
 	switch {
-	case r.formFactor > 0.1 && r.formFactor < 10:
+	case formFactor > 0.1 && formFactor < 10:
 		return Rectangle
-	case r.formFactor <= 0.1:
+	case formFactor <= 0.1:
 		return CCP
-	case r.formFactor >= 10:
+	case formFactor >= 10:
 		return Meander
 	default:
 		return "undefined"
