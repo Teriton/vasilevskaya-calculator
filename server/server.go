@@ -15,6 +15,7 @@ import (
 
 type OutputData struct {
 	FormFactor  float64
+	Temperature float64
 	Form        string
 	Material    string
 	GammaRdelta float64
@@ -41,6 +42,10 @@ type ResistorJSON struct {
 	Power      string `json:"power"`
 	Tolerance  string `json:"tolerance"`
 }
+type InputJSON struct {
+	Temperature string         `json:"temperature"`
+	Res         []ResistorJSON `json:"res"`
+}
 
 func countSingleResistor(c *gin.Context) {
 	// var res resistor.Resistor
@@ -62,7 +67,7 @@ func countSingleResistor(c *gin.Context) {
 }
 
 func countArrOfRes(c *gin.Context) {
-	var arrResJSON []ResistorJSON
+	var arrResJSON InputJSON
 
 	body, err := io.ReadAll(c.Request.Body)
 	if err != nil {
@@ -75,13 +80,16 @@ func countArrOfRes(c *gin.Context) {
 		c.AbortWithError(400, err)
 		return
 	}
-
+	temperature, err := strconv.ParseFloat(arrResJSON.Temperature, 64)
+	if err != nil {
+		return
+	}
 	var arrRes []resistor.Resistor
-	for _, j := range arrResJSON {
+	for _, j := range arrResJSON.Res {
 		resistance, _ := strconv.ParseFloat(j.Resistance, 32)
 		power, _ := strconv.ParseFloat(j.Power, 32)
 		tolerance, _ := strconv.ParseFloat(j.Tolerance, 32)
-		env := environment.InitEnvironment(70)
+		env := environment.InitEnvironment(temperature)
 		arrRes = append(arrRes, *resistor.NewResistor(resistance, tolerance, power, resistor.GetHollowMaterial(), env))
 	}
 
@@ -112,6 +120,7 @@ func countArrOfRes(c *gin.Context) {
 			DeltaR:      j.GetDeltaLrTrim(),
 			DeltaLr:     j.GetDeltaLrTrim(),
 			RminTrim:    j.GetRdashminTrim(),
+			Temperature: j.GetEnvironment().GetTemperature(),
 		})
 	}
 

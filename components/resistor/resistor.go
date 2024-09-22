@@ -88,6 +88,10 @@ func (r *Resistor) GetGammaRt() float64 {
 	return r.gammaRt
 }
 
+func (r *Resistor) GetEnvironment() *environment.Environment {
+	return r.environment
+}
+
 func (r *Resistor) GetTolerance() float64 {
 	return r.tolerance
 }
@@ -219,7 +223,7 @@ func (r *Resistor) SetMaterial(material material) {
 func (r *Resistor) autoCalculateInit() {
 	r.formFactor = CountFormFactor(r.resistance, r.material.squareResistance)
 	r.gammaRt = CountGammaRt(r.material.temperatureCoefficientOfResistance, r.environment.GetTemperature())
-	r.gammaRdelta = CountGammaRDelta(r.tolerance, r.material.squareResistance, r.environment.GetGammaRcontact(), r.material.senescence, r.gammaRt)
+	r.gammaRdelta = CountGammaRDelta(r.tolerance, r.environment.GetGammaRokv(), r.environment.GetGammaRcontact(), r.material.senescence, r.gammaRt)
 	r.formOfResistor = CountFormOfResistor(r.formFactor)
 	// Rectangle
 	r.bp = r.bpCount()
