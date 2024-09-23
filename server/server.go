@@ -159,7 +159,7 @@ func RunServer() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	router.LoadHTMLGlob("index/*")
+	router.LoadHTMLGlob("./index/*")
 	router.POST("/countResistor", countSingleResistor)
 	router.POST("/arrOfRes", countArrOfRes)
 	router.GET("/", mainFraim)
