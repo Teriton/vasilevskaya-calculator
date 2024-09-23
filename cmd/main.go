@@ -24,18 +24,18 @@ func main() {
 	// 	// *resistor.NewResistor(470.0, 20.0, 0.010, resistor.GetHollowMaterial(), env),
 	// }
 
-	// arrRes := []resistor.Resistor{
-	// 	*resistor.NewResistor(1200.0, 20.0, 0.150, resistor.GetHollowMaterial(), env),
-	// 	*resistor.NewResistor(2200.0, 20.0, 0.050, resistor.GetHollowMaterial(), env),
-	// 	*resistor.NewResistor(6000.0, 10.0, 0.040, resistor.GetHollowMaterial(), env),
-	// 	*resistor.NewResistor(1000.0, 20.0, 0.010, resistor.GetHollowMaterial(), env),
-	// 	*resistor.NewResistor(120000.0, 20.0, 0.051, resistor.GetHollowMaterial(), env),
-	// 	*resistor.NewResistor(130000.0, 2.0, 0.090, resistor.GetHollowMaterial(), env),
-	// 	*resistor.NewResistor(1000000.0, 10.0, 0.012, resistor.GetHollowMaterial(), env),
-	// 	*resistor.NewResistor(500000.0, 20.0, 0.032, resistor.GetHollowMaterial(), env),
-	// 	*resistor.NewResistor(12000.0, 20.0, 0.045, resistor.GetHollowMaterial(), env),
-	// 	*resistor.NewResistor(667000.0, 20.0, 0.123, resistor.GetHollowMaterial(), env),
-	// }
+	arrRes := []resistor.Resistor{
+		*resistor.NewResistor(1200.0, 20.0, 0.040, resistor.GetHollowMaterial(), env),
+		*resistor.NewResistor(2200.0, 20.0, 0.050, resistor.GetHollowMaterial(), env),
+		*resistor.NewResistor(6000.0, 10.0, 0.040, resistor.GetHollowMaterial(), env),
+		*resistor.NewResistor(1100.0, 20.0, 0.010, resistor.GetHollowMaterial(), env),
+		*resistor.NewResistor(120000.0, 20.0, 0.051, resistor.GetHollowMaterial(), env),
+		*resistor.NewResistor(130000.0, 20.0, 0.090, resistor.GetHollowMaterial(), env),
+		*resistor.NewResistor(100000.0, 10.0, 0.012, resistor.GetHollowMaterial(), env),
+		*resistor.NewResistor(500000.0, 20.0, 0.032, resistor.GetHollowMaterial(), env),
+		*resistor.NewResistor(12000.0, 2.0, 0.045, resistor.GetHollowMaterial(), env),
+		*resistor.NewResistor(600000.0, 20.0, 0.123, resistor.GetHollowMaterial(), env),
+	}
 	// Main
 	// arrRes := []resistor.Resistor{
 	// 	*resistor.NewResistor(30000.0, 10.0, 0.015, resistor.GetHollowMaterial(), env),
@@ -89,19 +89,35 @@ func main() {
 	// 	*resistor.NewResistor(40000.0, 20.0, 0.010, resistor.GetHollowMaterial(), env),
 	// }
 	// Француз
-	arrRes := []resistor.Resistor{
-		*resistor.NewResistor(8000.0, 10.0, 0.010, resistor.GetHollowMaterial(), env),
-		*resistor.NewResistor(3600.0, 2.0, 0.015, resistor.GetHollowMaterial(), env),
-		*resistor.NewResistor(8100.0, 20.0, 0.075, resistor.GetHollowMaterial(), env),
-		*resistor.NewResistor(10000.0, 10.0, 0.005, resistor.GetHollowMaterial(), env),
-		*resistor.NewResistor(10000.0, 10.0, 0.050, resistor.GetHollowMaterial(), env),
-		*resistor.NewResistor(1000.0, 10.0, 0.120, resistor.GetHollowMaterial(), env),
-		*resistor.NewResistor(22000.0, 20.0, 0.020, resistor.GetHollowMaterial(), env),
-		*resistor.NewResistor(14000.0, 20.0, 0.015, resistor.GetHollowMaterial(), env),
-		*resistor.NewResistor(15000.0, 10.0, 0.006, resistor.GetHollowMaterial(), env),
-		*resistor.NewResistor(33000.0, 20.0, 0.060, resistor.GetHollowMaterial(), env),
-	}
-
+	// arrRes := []resistor.Resistor{
+	// 	*resistor.NewResistor(8000.0, 10.0, 0.010, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(3600.0, 2.0, 0.015, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(8100.0, 20.0, 0.075, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(10000.0, 10.0, 0.005, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(10000.0, 10.0, 0.050, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(600000.0, 10.0, 0.120, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(22000.0, 20.0, 0.020, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(14000.0, 20.0, 0.015, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(15000.0, 10.0, 0.006, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(33000.0, 20.0, 0.060, resistor.GetHollowMaterial(), env),
+	// }
+	// Роман
+	// arrRes := []resistor.Resistor{
+	// 	*resistor.NewResistor(10000.0, 10.0, 0.005, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(1000000.0, 10.0, 0.120, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(12000.0, 20.0, 0.025, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(36000.0, 10.0, 0.020, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(150000.0, 2.0, 0.050, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(25000.0, 20.0, 0.015, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(730000.0, 10.0, 0.150, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(10000.0, 10.0, 0.030, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(330000.0, 10.0, 0.075, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(14000.0, 20.0, 0.020, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(10000.0, 10.0, 0.015, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(225000.0, 10.0, 0.075, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(15000.0, 10.0, 0.050, resistor.GetHollowMaterial(), env),
+	// 	*resistor.NewResistor(88000.0, 20.0, 0.055, resistor.GetHollowMaterial(), env),
+	// }
 	// Дима
 	// arrRes := []resistor.Resistor{
 	// 	*resistor.NewResistor(1000.0, 10.0, 0.005, resistor.GetHollowMaterial(), env),
@@ -180,6 +196,7 @@ func main() {
 	}
 
 	// resistor.SetMaterialsForResistors(arrRes, resistor.GetMaterials()[0])
+	consoleoutput.RenderEnviroment(arrRes)
 	consoleoutput.RenderTableOfResistors(arrRes)
 	consoleoutput.RenderTableOfResistorsPractos1(arrRes)
 

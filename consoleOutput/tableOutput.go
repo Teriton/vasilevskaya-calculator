@@ -36,9 +36,28 @@ func RenderTableOfResistors(arrOfRes []resistor.Resistor) {
 	t.Render()
 }
 
-func RenderTableOfResistorsPractos1(arrOfRes []resistor.Resistor) {
+func RenderEnviroment(arrOfRes []resistor.Resistor) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Temperature", "Rokv", "Rocontact", "GammaRt"})
+	t.AppendRow(
+		table.Row{
+			arrOfRes[0].GetEnvironment().GetTemperature(),
+			arrOfRes[0].GetEnvironment().GetGammaRokv(),
+			arrOfRes[0].GetEnvironment().GetGammaRcontact(),
+			arrOfRes[0].GetGammaRt(),
+		},
+	)
+	t.SetStyle(table.StyleColoredBlackOnYellowWhite)
+	t.AppendSeparator()
+	t.Render()
+}
+
+func RenderTableOfResistorsPractos1(arrOfRes []resistor.Resistor) {
+	t := table.NewWriter()
+	t1 := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t1.SetOutputMirror(os.Stdout)
 	// if len(arrOfRes) > 0 {
 	// 	t.AppendHeader(table.Row{"",
 	// 		"Материал:" + arrOfRes[0].GetMaterial().GetName(),
@@ -47,26 +66,46 @@ func RenderTableOfResistorsPractos1(arrOfRes []resistor.Resistor) {
 	// 	})
 	// }
 	t.AppendHeader(table.Row{"#", "R,Ом", "P,Вт", "gammaR,%", "кф", "bp,мм", "bdelta,мм", "bmax,мм", "b,мм", "l,мм", "L,мм", "B,мм", "n"})
+	t1.AppendHeader(table.Row{"#", "R,Ом", "P,Вт", "gammaR,%", "кф", "lp,мм", "ldelta,мм", "lmax,мм", "b,мм", "l,мм"})
 	for i, j := range arrOfRes {
-		t.AppendRow(table.Row{
-			i + 1,
-			j.GetResistance(),
-			j.GetPower(),
-			j.GetTolerance(),
-			j.GetFromFactor(),
-			j.GetBp(),
-			j.GetBdelta(),
-			j.GetWidth(),
-			j.GetWidth(),
-			j.GetHeight(),
-			j.GetXlengthMeander(),
-			j.GetYlengthMeander(),
-			j.GetNumberOfLinks(),
-		})
+		if j.GetFromFactor() > 1 {
+			t.AppendRow(table.Row{
+				i + 1,
+				j.GetResistance(),
+				j.GetPower(),
+				j.GetTolerance(),
+				j.GetFromFactor(),
+				j.GetBp(),
+				j.GetBdelta(),
+				j.GetWidth(),
+				j.GetWidth(),
+				j.GetHeight(),
+				j.GetXlengthMeander(),
+				j.GetYlengthMeander(),
+				j.GetNumberOfLinks(),
+			})
+		} else {
+			t1.AppendRow(table.Row{
+				i + 1,
+				j.GetResistance(),
+				j.GetPower(),
+				j.GetTolerance(),
+				j.GetFromFactor(),
+				j.GetLp(),
+				j.GetLdelta(),
+				j.GetHeight(),
+				j.GetWidth(),
+				j.GetHeight(),
+			})
+		}
+
 	}
 	t.SetStyle(table.StyleColoredBlackOnYellowWhite)
 	t.AppendSeparator()
+	t1.SetStyle(table.StyleColoredBlackOnYellowWhite)
+	t1.AppendSeparator()
 	t.Render()
+	t1.Render()
 }
 
 func RenderMaterialsCheck(arrOfCheckedMaterials []resistor.CheckMaterial) {
