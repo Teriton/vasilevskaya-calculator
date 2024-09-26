@@ -5,44 +5,41 @@ import (
 	"math"
 )
 
-func (r *Resistor) InitTrim(bdelta float64) {
-	r.gammaRdeltaTrim = CalculateGammaRdeltaTrim(r.formFactor, r.width, bdelta)
-	r.gammaR = CalculateGammaR(r.material, r.gammaRdeltaTrim, *r.environment, r.gammaRt)
-	r.mOfTrim = CalculateMofTrim(r.gammaR, r.gammaRdeltaTrim)
-	bmax := r.width + r.environment.GetDeltab()
-	bmin := r.width - r.environment.GetDeltab()
-	// lmin := r.height - r.environment.GetDeltal()
-	rokvmax := r.environment.GetGammaRokv()*0.01*r.material.squareResistance + r.material.squareResistance
-	rokvmin := r.material.squareResistance - r.environment.GetGammaRokv()*0.01*r.material.squareResistance
-	// rmax := r.resistance + r.resistance*r.gammaR*0.01
-	// rmin := r.resistance - r.resistance*r.gammaR*0.01
-	rmax := r.resistance * (1 + (r.tolerance-r.gammaRt-r.material.senescence)/100)
-	rmin := r.resistance * (1 - (r.tolerance-r.gammaRt-r.material.senescence)/100)
-	r.lnTrim = CalculateLn(rmax, bmin, rokvmax)
-	r.rdashminTrim = CalculateRdashmin(rokvmin, r.lnTrim, bmax)
-	r.deltarTrim = CalculateDeltarTrim(rmin, r.rdashminTrim)
+type TrimLength struct {
+	gammaRdeltaTrim float64
+	gammaR          float64
+	mOfTrim         float64
+	lnTrim          float64
+	loTrim          float64
+	rdashminTrim    float64
+	ltune           float64
+	deltarTrim      float64
+	deltaLrTrim     float64
+	deltaLdashTrim  float64
+	deltaRTrim      float64
+	lpodg           float64
+	lsum            float64
+	gammakf         float64
+}
+
+func (r *Resistor) initTrimLength() {
+	r.trimLength.gammaRdeltaTrim = CalculateGammaRdeltaTrim(r.formFactor, r.GetWidth(), r.environment.GetDeltab())
+	r.trimLength.gammaR = CalculateGammaR(r.material, r.GetGammaRdeltaTrimL(), *r.environment, r.gammaRt)
+	r.trimLength.mOfTrim = CalculateMofTrim(r.GetGammaRTrimL(), r.GetGammaRdeltaTrimL())
+	r.trimLength.lnTrim = CalculateLn(r.Getrmax(), r.Getbmin(), r.Getrokvmax())
+	r.trimLength.rdashminTrim = CalculateRdashmin(r.Getrokvmin(), r.GetlnTrimL(), r.Getbmax())
+	r.trimLength.deltarTrim = CalculateDeltarTrim(r.Getrmin(), r.GetRdashminTrimL())
 	// BackThen
-	r.loTrim = CalculateLo(rmin, bmax, rokvmin)
-	r.ltune = CalculateLtune(r.loTrim, r.lnTrim)
-	r.deltaLrTrim = CalculateDeltaLr(r.ltune, r.numberOfLinks)
-	r.deltaLdashTrim = CalculateDeltaLdash(rokvmin, r.deltaLrTrim, bmax)
-	r.deltaRTrim = CalculateDeltaR(r.deltarTrim, r.mOfTrim)
-	r.lpodg = CalculateLpodg(r.ltune, r.mOfTrim)
-	r.lsum = CalculateLsum(r.lnTrim, r.lpodg, r.mOfTrim)
+	r.trimLength.loTrim = CalculateLo(r.Getrmin(), r.Getbmax(), r.Getrokvmin())
+	r.trimLength.ltune = CalculateLtune(r.GetloTrimL(), r.GetlnTrimL())
+	r.trimLength.deltaLrTrim = CalculateDeltaLr(r.GetLtuneTrimL(), r.GetNumberOfLinks())
+	r.trimLength.deltaLdashTrim = CalculateDeltaLdash(r.Getrokvmin(), r.GetDeltaLrTrimL(), r.Getbmax())
+	r.trimLength.deltaRTrim = CalculateDeltaR(r.GetDeltaRTrimL(), r.GetMOfTrimL())
+	r.trimLength.lpodg = CalculateLpodg(r.GetLtuneTrimL(), r.GetMOfTrimL())
+	r.trimLength.lsum = CalculateLsum(r.GetlnTrimL(), r.GetLpodgTrimL(), r.GetMOfTrimL())
 
 	// NewWay
-	r.gammakf = CalculateGammaKf(r.height, r.width, r.environment.GetDeltal(), r.environment.GetDeltab())
-	// n := CalculateNTrim(r.gammakf, r.environment.GetGammaRokv(), r.tolerance, r.material.senescence)
-	// if r.resistance == 130000.0 {
-	// 	fmt.Println("bmax: ", bmax)
-	// 	fmt.Println("bmin: ", bmin)
-	// 	fmt.Println("lmin: ", lmin)
-	// 	fmt.Println("rokvmax: ", rokvmax)
-	// 	fmt.Println("rokvmin: ", rokvmin)
-	// 	fmt.Println("rmax: ", rmax)
-	// 	fmt.Println("rmin: ", rmin)
-	// 	fmt.Println(gammakf, n)
-	// }
+	r.trimLength.gammakf = CalculateGammaKf(r.GetHeight(), r.GetWidth(), r.environment.GetDeltal(), r.environment.GetDeltab())
 }
 
 func CalculateGammaR(mat material, gammaRdeltaTrim float64, env environment.Environment, gammaRt float64) float64 {
@@ -103,4 +100,57 @@ func CalculateGammaKf(l float64, b float64, deltal float64, deltab float64) floa
 
 func CalculateNTrim(gammakf float64, gammarokv float64, gammaR float64, gammaSt float64) float64 {
 	return math.Round((gammakf + gammarokv) / (gammaR - gammaSt))
+}
+
+// Getters
+
+func (r *Resistor) GetGammaRdeltaTrimL() float64 {
+	return r.trimLength.gammaRdeltaTrim
+}
+
+func (r *Resistor) GetGammaRTrimL() float64 {
+	return r.trimLength.gammaR
+}
+
+func (r *Resistor) GetMOfTrimL() float64 {
+	return r.trimLength.mOfTrim
+}
+
+func (r *Resistor) GetlnTrimL() float64 {
+	return r.trimLength.lnTrim
+}
+
+func (r *Resistor) GetloTrimL() float64 {
+	return r.trimLength.loTrim
+}
+
+func (r *Resistor) GetRdashminTrimL() float64 {
+	return r.trimLength.rdashminTrim
+}
+
+func (r *Resistor) GetLtuneTrimL() float64 {
+	return r.trimLength.ltune
+}
+func (r *Resistor) GetDeltarTrimL() float64 {
+	return r.trimLength.deltarTrim
+}
+func (r *Resistor) GetDeltaLrTrimL() float64 {
+	return r.trimLength.deltaLrTrim
+}
+
+func (r *Resistor) GetDeltaLdashTrimL() float64 {
+	return r.trimLength.deltaLdashTrim
+}
+func (r *Resistor) GetDeltaRTrimL() float64 {
+	return r.trimLength.deltaRTrim
+}
+
+func (r *Resistor) GetLpodgTrimL() float64 {
+	return r.trimLength.lpodg
+}
+func (r *Resistor) GetLsumTrimL() float64 {
+	return r.trimLength.lsum
+}
+func (r *Resistor) GetGammakfTrimL() float64 {
+	return r.trimLength.gammakf
 }

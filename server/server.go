@@ -114,12 +114,12 @@ func countArrOfRes(c *gin.Context) {
 			NOfMeander:  j.GetNumberOfLinks(),
 			Xmeander:    j.GetXlengthMeander(),
 			Ymeander:    j.GetYlengthMeander(),
-			LSumTrim:    j.GetLsum(),
-			MOfTrim:     j.GetMOfTrim(),
-			Lpodg:       j.GetLpodg(),
-			DeltaR:      j.GetDeltaLrTrim(),
-			DeltaLr:     j.GetDeltaLrTrim(),
-			RminTrim:    j.GetRdashminTrim(),
+			LSumTrim:    j.GetLsumTrimL(),
+			MOfTrim:     j.GetMOfTrimL(),
+			Lpodg:       j.GetLpodgTrimL(),
+			DeltaR:      j.GetDeltaLrTrimL(),
+			DeltaLr:     j.GetDeltaLrTrimL(),
+			RminTrim:    j.GetRdashminTrimL(),
 			Temperature: j.GetEnvironment().GetTemperature(),
 		})
 	}

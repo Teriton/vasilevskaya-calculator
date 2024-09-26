@@ -61,9 +61,9 @@ type formTest struct {
 }
 
 var formTests = []formTest{
-	{100, Meander},
-	{1, Rectangle},
-	{0.1, CCP},
+	{100, MeanderForm},
+	{1, RectangleForm},
+	{0.1, CCPForm},
 }
 
 func TestCountFormOfResistor(t *testing.T) {

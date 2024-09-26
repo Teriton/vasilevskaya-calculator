@@ -3,7 +3,7 @@ package resistor
 type Form string
 
 const (
-	Rectangle Form = "Прямоугольник"
-	Meander   Form = "Меандр"
-	CCP       Form = "ЦКП"
+	RectangleForm Form = "Прямоугольник"
+	MeanderForm   Form = "Меандр"
+	CCPForm       Form = "ЦКП"
 )

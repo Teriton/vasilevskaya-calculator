@@ -20,42 +20,24 @@ type Resistor struct {
 	gammaRdelta    float64
 	formOfResistor Form
 
+	//Tolerance
+	precision Precision
 	// Rectangle
-	bp     float64
-	bdelta float64
-	width  float64
-	lp     float64
-	ldelta float64
-	height float64
+	rectangle Rectangle
 
 	// Stripes
 
 	stripesXlength float64
 
 	// Meander
-	numberOfLinks  float64
-	meanderXLength float64
-	meanderYLength float64
+	meander Meander
 
 	// CCP
-	bpCCP     float64
-	bdeltaCCP float64
+	ccp CCP
 
 	// Trim
-	gammaRdeltaTrim float64
-	gammaR          float64
-	mOfTrim         float64
-	lnTrim          float64
-	loTrim          float64
-	rdashminTrim    float64
-	ltune           float64
-	deltarTrim      float64
-	deltaLrTrim     float64
-	deltaLdashTrim  float64
-	deltaRTrim      float64
-	lpodg           float64
-	lsum            float64
-	gammakf         float64
+	trimLength TrimLength
+	trimWide   TrimWide
 }
 
 func NewResistor(resistance float64, tolerance float64, power float64, material material, enviroment *environment.Environment) *Resistor {
@@ -111,104 +93,8 @@ func (r *Resistor) GetGammaRdelta() float64 {
 func (r *Resistor) GetMaterial() *material {
 	return &r.material
 }
-
-func (r *Resistor) GetBp() float64 {
-	return r.bp
-}
-
-func (r *Resistor) GetBdelta() float64 {
-	return r.bdelta
-}
-
-func (r *Resistor) GetWidth() float64 {
-	return r.width
-}
-
-func (r *Resistor) GetLp() float64 {
-	return r.lp
-}
-
-func (r *Resistor) GetLdelta() float64 {
-	return r.ldelta
-}
-
-func (r *Resistor) GetHeight() float64 {
-	return r.height
-}
-
-func (r *Resistor) GetNumberOfLinks() float64 {
-	return r.numberOfLinks
-}
-
-func (r *Resistor) GetXlengthMeander() float64 {
-	return r.meanderXLength
-}
-
-func (r *Resistor) GetYlengthMeander() float64 {
-	return r.meanderYLength
-}
-
 func (r *Resistor) GetXlengthStripes() float64 {
 	return r.stripesXlength
-}
-
-func (r *Resistor) GetBpCCP() float64 {
-	return r.bpCCP
-}
-
-func (r *Resistor) GetBdeltaCCP() float64 {
-	return r.bdeltaCCP
-}
-
-func (r *Resistor) GetGammaRdeltaTrim() float64 {
-	return r.gammaRdeltaTrim
-}
-
-func (r *Resistor) GetGammaR() float64 {
-	return r.gammaR
-}
-
-func (r *Resistor) GetMOfTrim() float64 {
-	return r.mOfTrim
-}
-
-func (r *Resistor) GetlnTrim() float64 {
-	return r.lnTrim
-}
-
-func (r *Resistor) GetloTrim() float64 {
-	return r.loTrim
-}
-
-func (r *Resistor) GetRdashminTrim() float64 {
-	return r.rdashminTrim
-}
-
-func (r *Resistor) GetLtune() float64 {
-	return r.ltune
-}
-func (r *Resistor) GetDeltarTrim() float64 {
-	return r.deltarTrim
-}
-func (r *Resistor) GetDeltaLrTrim() float64 {
-	return r.deltaLrTrim
-}
-
-func (r *Resistor) GetDeltaLdashTrim() float64 {
-	return r.deltaLdashTrim
-}
-func (r *Resistor) GetDeltaRTrim() float64 {
-	return r.deltaRTrim
-}
-
-func (r *Resistor) GetLpodg() float64 {
-	return r.lpodg
-}
-func (r *Resistor) GetLsum() float64 {
-	return r.lsum
-}
-func (r *Resistor) GetGammakf() float64 {
-	return r.gammakf
 }
 
 // Setters
@@ -226,22 +112,19 @@ func (r *Resistor) autoCalculateInit() {
 	r.gammaRdelta = CountGammaRDelta(r.tolerance, r.environment.GetGammaRokv(), r.environment.GetGammaRcontact(), r.material.senescence, r.gammaRt)
 	r.formOfResistor = CountFormOfResistor(r.formFactor)
 	// Rectangle
-	r.bp = r.bpCount()
-	r.bdelta = r.bdeltaCount()
-	r.width = r.bCount()
-	r.lp = r.lpCount()
-	r.ldelta = r.ldeltaCount()
-	r.height = r.lCount()
+	r.initRectange()
+	// Precision
+	r.precisionInit()
 	// Stripes
 	a, b := r.GetWidth(), r.GetWidth()
 	r.stripesXlength = CountXstripes(a, b, r.GetFromFactor())
 	// Meander
 	r.InitMeander(a, b)
 	// CCP
-	r.bpCCP = CountBpCCP(r.resistance, r.power, r.material)
-	r.bdeltaCCP = CountBdeltaCCP(0.01, 0.01, 1, r.tolerance, *r.environment)
+	r.initCCP()
 	// Trim
-	r.InitTrim(0.01)
+	r.initTrimLength()
+	r.InitTrimWide()
 }
 
 func CountFormFactor(resistance float64, squareResistance float64) float64 {
@@ -259,11 +142,11 @@ func CountGammaRt(tkr float64, temperature float64) float64 {
 func CountFormOfResistor(formFactor float64) Form {
 	switch {
 	case formFactor > 0.1 && formFactor < 10:
-		return Rectangle
+		return RectangleForm
 	case formFactor <= 0.1:
-		return CCP
+		return CCPForm
 	case formFactor >= 10:
-		return Meander
+		return MeanderForm
 	default:
 		return "undefined"
 	}
@@ -280,4 +163,8 @@ func CalculateAndSetMaterial(arrOfRes []Resistor) {
 	mat := CalculateMaterial(RoOpt)
 	SetMaterialsForResistors(arrOfRes, mat)
 
+}
+
+func TehnRound(num float64) float64 {
+	return math.Ceil(num*10) / 10
 }

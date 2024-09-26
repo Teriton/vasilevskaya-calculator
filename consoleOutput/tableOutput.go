@@ -65,7 +65,7 @@ func RenderTableOfResistorsPractos1(arrOfRes []resistor.Resistor) {
 	// 		"Roopt: " + strconv.FormatFloat(resistor.CalculateRoOpt(arrOfRes), 'g', 10, 64),
 	// 	})
 	// }
-	t.AppendHeader(table.Row{"#", "R,Ом", "P,Вт", "gammaR,%", "кф", "bp,мм", "bdelta,мм", "bmax,мм", "b,мм", "l,мм", "L,мм", "B,мм", "n"})
+	t.AppendHeader(table.Row{"#", "R,Ом", "P,Вт", "gammaR,%", "кф", "bp,мм", "bdelta,мм", "bmax,мм", "b,мм", "l,мм", "L,мм", "B,мм", "n", "S, мм"})
 	t1.AppendHeader(table.Row{"#", "R,Ом", "P,Вт", "gammaR,%", "кф", "lp,мм", "ldelta,мм", "lmax,мм", "b,мм", "l,мм"})
 	for i, j := range arrOfRes {
 		if j.GetFromFactor() > 1 {
@@ -83,6 +83,7 @@ func RenderTableOfResistorsPractos1(arrOfRes []resistor.Resistor) {
 				j.GetXlengthMeander(),
 				j.GetYlengthMeander(),
 				j.GetNumberOfLinks(),
+				j.GetMeanderArea(),
 			})
 		} else {
 			t1.AppendRow(table.Row{
@@ -158,21 +159,21 @@ func RenderMaterialsCheck(arrOfCheckedMaterials []resistor.CheckMaterial) {
 	t.Render()
 }
 
-func PodgResistorPrint(res *resistor.Resistor) {
+func PodgWideResistorPrint(res *resistor.Resistor) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Сопротивление", "Точность", "Мощность", "Общая длинна", "lподг", "lрег", "m", "Rсекции", "Rmin"})
+	t.AppendHeader(table.Row{"Сопротивление", "Точность", "Мощность", "Общая ширина", "breg", "bn", "m", "deltab", "Rmin"})
 	t.AppendRow(
 		table.Row{
 			res.GetResistance(),
 			res.GetTolerance(),
 			res.GetPower(),
-			res.GetLsum(),
-			res.GetLpodg(),
-			res.GetLtune(),
-			res.GetMOfTrim(),
-			res.GetDeltaRTrim(),
-			res.GetRdashminTrim(),
+			res.GetboTrimW(),
+			res.GetbregTrimW(),
+			res.GetbnTrimW(),
+			res.GetMOfTrimL(),
+			res.GetdeltabiTrimW(),
+			res.GetrdashminTrimW(),
 		},
 	)
 	t.SetStyle(table.StyleColoredBright)
