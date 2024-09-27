@@ -3,7 +3,8 @@
 ### Пример запроса по /arrOfRes
 ```json
 {
-    "temperature":"50",
+    "temperature":50.0,
+    "material": 18,
     "res":
     [
         {
@@ -58,4 +59,5 @@
         }
     ]
 }
+
 ```

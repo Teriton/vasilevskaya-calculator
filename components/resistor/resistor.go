@@ -24,17 +24,12 @@ type Resistor struct {
 	precision Precision
 	// Rectangle
 	rectangle Rectangle
-
 	// Stripes
-
 	stripesXlength float64
-
 	// Meander
 	meander Meander
-
 	// CCP
 	ccp CCP
-
 	// Trim
 	trimLength TrimLength
 	trimWide   TrimWide
