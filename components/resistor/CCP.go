@@ -11,7 +11,7 @@ type CCP struct {
 
 func (r *Resistor) initCCP() {
 	r.ccp.bpCCP = CountBpCCP(r.resistance, r.power, r.material)
-	r.ccp.bdeltaCCP = CountBdeltaCCP(r.environment.GetDeltab(), r.environment.GetDeltal(), 1, r.tolerance, r.environment.GetGammaRokv())
+	r.ccp.bdeltaCCP = CountBdeltaCCP(r.environment.GetDeltab(), r.environment.GetDeltal(), 0.04, r.tolerance, r.environment.GetGammaRokv())
 }
 
 func CountBpCCP(resistance, P float64, material material) float64 {

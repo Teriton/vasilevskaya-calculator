@@ -1,8 +1,6 @@
 package resistor
 
-import (
-	"math"
-)
+import "fmt"
 
 type TrimWide struct {
 	n        float64
@@ -24,7 +22,7 @@ func (r *Resistor) InitTrimWide() {
 	r.trimWide.deltar = CalculateDeltarTrimWide(r.Getrmin(), r.GetrdashminTrimW())
 	r.trimWide.bn = CalculateBn(r.Getrokvmin(), r.Getlmin(), r.Getrmin())
 	r.trimWide.deltaR = CalculateDeltaRTrimWide(r.GetdeltarTrimW(), r.GetnTrimW())
-	for i := range int(math.Ceil(r.GetnTrimW())) {
+	for i := range int(r.GetnTrimW()) {
 		Ril := CalculateRi(r.GetrdashminTrimW(), i, r.GetdeltaRTrimW())
 		ril := Calculateri(Ril, r.GetdeltaRTrimW())
 		deltabil := CalculateDeltaBi(r.Getrokvmin(), r.Getlmin(), ril)
@@ -32,10 +30,10 @@ func (r *Resistor) InitTrimWide() {
 		*r.GetirTrimW() = append(*r.GetirTrimW(), ril)
 		*r.GetdeltabiTrimW() = append(*r.GetdeltabiTrimW(), deltabil)
 	}
-	for i := range int(math.Ceil(r.GetnTrimW())) {
-		// fmt.Println("ri ", i+1, ": ", (*r.GetirTrimW())[i])
-		// fmt.Println("Ri ", i+1, ": ", (*r.GetirTrimW())[i])
-		// fmt.Println("deltaBi  ", i+1, ": ", deltabi[i])
+	for i := range int(r.GetnTrimW()) {
+		fmt.Println("ri ", i+1, ": ", (*r.GetirTrimW())[i])
+		fmt.Println("Ri ", i+1, ": ", (*r.GetiRTrimW())[i])
+		fmt.Println("deltaBi  ", i+1, ": ", (*r.GetdeltabiTrimW())[i])
 		r.trimWide.breg += (*r.GetdeltabiTrimW())[i]
 	}
 	// fmt.Println("bmax: ", bmax)

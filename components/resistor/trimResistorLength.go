@@ -20,26 +20,28 @@ type TrimLength struct {
 	lpodg           float64
 	lsum            float64
 	gammakf         float64
+	looTrim         float64
 }
 
 func (r *Resistor) initTrimLength() {
 	r.trimLength.gammaRdeltaTrim = CalculateGammaRdeltaTrim(r.formFactor, r.GetWidth(), r.environment.GetDeltab())
 	r.trimLength.gammaR = CalculateGammaR(r.material, r.GetGammaRdeltaTrimL(), *r.environment, r.gammaRt)
-	r.trimLength.mOfTrim = CalculateMofTrim(r.GetGammaRTrimL(), r.GetGammaRdeltaTrimL())
-	r.trimLength.lnTrim = CalculateLn(r.Getrmax(), r.Getbmin(), r.Getrokvmax())
+	r.trimLength.mOfTrim = CalculateMofTrim(r.GetGammaRTrimL(), r.GetTolerance())
+	r.trimLength.lnTrim = TehnRound(CalculateLn(r.Getrmax(), r.Getbmin(), r.Getrokvmax(), r.environment.GetDeltal())) //
 	r.trimLength.rdashminTrim = CalculateRdashmin(r.Getrokvmin(), r.GetlnTrimL(), r.Getbmax())
 	r.trimLength.deltarTrim = CalculateDeltarTrim(r.Getrmin(), r.GetRdashminTrimL())
 	// BackThen
-	r.trimLength.loTrim = CalculateLo(r.Getrmin(), r.Getbmax(), r.Getrokvmin())
-	r.trimLength.ltune = CalculateLtune(r.GetloTrimL(), r.GetlnTrimL())
+	r.trimLength.loTrim = TehnRound(CalculateLo(r.Getrmin(), r.Getbmax(), r.Getrokvmin())) //
+	r.trimLength.ltune = CalculateLtune(r.GetloTrimL(), r.GetlnTrimL())                    //
 	r.trimLength.deltaLrTrim = CalculateDeltaLr(r.GetLtuneTrimL(), r.GetNumberOfLinks())
 	r.trimLength.deltaLdashTrim = CalculateDeltaLdash(r.Getrokvmin(), r.GetDeltaLrTrimL(), r.Getbmax())
 	r.trimLength.deltaRTrim = CalculateDeltaR(r.GetDeltaRTrimL(), r.GetMOfTrimL())
-	r.trimLength.lpodg = CalculateLpodg(r.GetLtuneTrimL(), r.GetMOfTrimL())
+	r.trimLength.lpodg = TehnRound(CalculateLpodg(r.GetLtuneTrimL(), r.GetMOfTrimL()))
 	r.trimLength.lsum = CalculateLsum(r.GetlnTrimL(), r.GetLpodgTrimL(), r.GetMOfTrimL())
 
 	// NewWay
 	r.trimLength.gammakf = CalculateGammaKf(r.GetHeight(), r.GetWidth(), r.environment.GetDeltal(), r.environment.GetDeltab())
+	r.trimLength.looTrim = CalculateLooTrim(r.GetlnTrimL(), r.GetLtuneTrimL(), 0.1, r.GetMOfTrimL())
 }
 
 func CalculateGammaR(mat material, gammaRdeltaTrim float64, env environment.Environment, gammaRt float64) float64 {
@@ -47,15 +49,15 @@ func CalculateGammaR(mat material, gammaRdeltaTrim float64, env environment.Envi
 }
 
 func CalculateGammaRdeltaTrim(formFactor float64, b float64, deltab float64) float64 {
-	return 2 * ((1 + (1 / formFactor)) / ((b / deltab) - (deltab / b))) * 100
+	return 2 * ((1 + (deltab / (formFactor * deltab))) / ((b / deltab) - (deltab / b))) * 100
 }
 
-func CalculateMofTrim(gammaR float64, gammaRdeltaTrim float64) float64 {
-	return math.Ceil(gammaR / gammaRdeltaTrim)
+func CalculateMofTrim(gammaR float64, tolerance float64) float64 {
+	return math.Ceil(gammaR / tolerance)
 }
 
-func CalculateLn(rmax float64, bmin float64, rokvmax float64) float64 {
-	return ((rmax * bmin) / rokvmax) - 0.01
+func CalculateLn(rmax float64, bmin float64, rokvmax float64, deltal float64) float64 {
+	return ((rmax * bmin) / rokvmax) - deltal
 }
 
 func CalculateRdashmin(rokvmin float64, lmin float64, bmax float64) float64 {
@@ -100,6 +102,10 @@ func CalculateGammaKf(l float64, b float64, deltal float64, deltab float64) floa
 
 func CalculateNTrim(gammakf float64, gammarokv float64, gammaR float64, gammaSt float64) float64 {
 	return math.Round((gammakf + gammarokv) / (gammaR - gammaSt))
+}
+
+func CalculateLooTrim(ln, lreg, deltaltehn, m float64) float64 {
+	return ln + lreg + deltaltehn*m
 }
 
 // Getters
@@ -153,4 +159,8 @@ func (r *Resistor) GetLsumTrimL() float64 {
 }
 func (r *Resistor) GetGammakfTrimL() float64 {
 	return r.trimLength.gammakf
+}
+
+func (r *Resistor) GetlooTrimL() float64 {
+	return r.trimLength.looTrim
 }
