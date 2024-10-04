@@ -1,6 +1,9 @@
 package capacitor
 
-import "example/main/environment"
+import (
+	"example/main/environment"
+	"math"
+)
 
 type Capacitor struct {
 	capacity  float64
@@ -11,6 +14,7 @@ type Capacitor struct {
 	material Material
 
 	areaMoreThan5 AreaMoreThan5
+	ctripledash0  float64
 }
 
 func NewCapacitor(capacity float64, urab float64, tolerance float64, material Material, env *environment.Environment) *Capacitor {
@@ -22,6 +26,7 @@ func NewCapacitor(capacity float64, urab float64, tolerance float64, material Ma
 
 	cap.env = env
 	cap.material = material
+	cap.ctripledash0 = 10000000
 
 	cap.autoCalculateInit()
 
@@ -32,10 +37,35 @@ func (c *Capacitor) autoCalculateInit() {
 	c.initAreaMoreThan5()
 }
 
+func TehnRound(num float64) float64 {
+	return math.Ceil(num*10) / 10
+}
+
+func CalculateCtripledash0(arrOfCaps []Capacitor) float64 {
+	var smallestCapacitor Capacitor = arrOfCaps[0]
+	for i, j := range arrOfCaps {
+		if j.GetCapacity() < smallestCapacitor.GetCapacity() {
+			smallestCapacitor = arrOfCaps[i]
+		}
+	}
+	return smallestCapacitor.GetCapacity() / smallestCapacitor.GetAreaMoreThan5().GetRealArea()
+}
+
+func SetCtripledash0ForCapacitors(arrOfCaps []Capacitor, ctripledash0 float64) {
+	for i := range arrOfCaps {
+		(arrOfCaps)[i].SetCtripledash0(ctripledash0)
+	}
+}
+
 // Setters
 
 func (c *Capacitor) SetMaterial(material Material) {
 	c.material = material
+	c.autoCalculateInit()
+}
+
+func (c *Capacitor) SetCtripledash0(num float64) {
+	c.ctripledash0 = num
 	c.autoCalculateInit()
 }
 
@@ -62,4 +92,7 @@ func (c *Capacitor) GetAreaMoreThan5() *AreaMoreThan5 {
 
 func (c *Capacitor) GetEnv() *environment.Environment {
 	return c.env
+}
+func (c *Capacitor) GetCtripledash0() float64 {
+	return c.ctripledash0
 }

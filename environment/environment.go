@@ -11,6 +11,7 @@ type Environment struct {
 	gammaC0  float64
 	gammaCst float64
 	delataA  float64
+	ita      float64
 }
 
 func InitEnvironment(temperature float64) *Environment {
@@ -22,9 +23,10 @@ func InitEnvironment(temperature float64) *Environment {
 	environment.deltal = 0.01
 
 	environment.kz = 3
-	environment.gammaC0 = 10
+	environment.gammaC0 = 5
 	environment.gammaCst = 3
-	environment.delataA = 0.001
+	environment.delataA = 0.01
+	environment.ita = 0.05
 	return environment
 }
 
@@ -62,4 +64,8 @@ func (e *Environment) GetGammaCst() float64 {
 
 func (e *Environment) GetDaltaA() float64 {
 	return e.delataA
+}
+
+func (e *Environment) GetIta() float64 {
+	return e.ita
 }

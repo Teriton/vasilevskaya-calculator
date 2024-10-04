@@ -246,6 +246,10 @@ func main() {
 	}
 
 	capacitor.SetMaterialsForCapacitors(arrOfCups, capacitor.Materials[8])
+	capacitor.SetCtripledash0ForCapacitors(
+		arrOfCups,
+		capacitor.CalculateCtripledash0(arrOfCups),
+	)
 
 	for i, j := range arrOfCups {
 		fmt.Println("==============")
@@ -259,7 +263,15 @@ func main() {
 		fmt.Println("gammaSdop: ", j.GetAreaMoreThan5().GetGammaSdop())
 		fmt.Println("C'0: ", j.GetAreaMoreThan5().GetCdash0())
 		fmt.Println("C''0: ", j.GetAreaMoreThan5().GetDdoubledash0())
+		fmt.Println("C'''0: ", j.GetCtripledash0())
 		fmt.Println("C0: ", j.GetAreaMoreThan5().GetC0())
+		fmt.Println("A1: ", j.GetAreaMoreThan5().GetA1())
+		fmt.Println("B1: ", j.GetAreaMoreThan5().GetB1())
+		fmt.Println("A2: ", j.GetAreaMoreThan5().GetA2())
+		fmt.Println("B2: ", j.GetAreaMoreThan5().GetB2())
+		fmt.Println("A3: ", j.GetAreaMoreThan5().GetA3())
+		fmt.Println("B3: ", j.GetAreaMoreThan5().GetB3())
+		fmt.Println("Итоговая площадь: ", j.GetAreaMoreThan5().GetRealArea())
 	}
 
 }
