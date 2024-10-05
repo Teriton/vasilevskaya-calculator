@@ -3,6 +3,7 @@ package main
 import (
 	"example/main/components/capacitor"
 	"example/main/environment"
+	"example/main/server"
 	"fmt"
 )
 
@@ -274,5 +275,5 @@ func main() {
 		// fmt.Println("Площадь  1-5 мм^2: ", j.GetArea15().GetArea())
 		// fmt.Println("Коэфицциент для 1-5: ", j.GetArea15().GetK())
 	}
-
+	server.RunServer()
 }

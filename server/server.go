@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"example/main/components/capacitor"
 	"example/main/components/resistor"
 	"example/main/environment"
 	"fmt"
@@ -13,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type OutputData struct {
+type OutputDataRes struct {
 	Resistance float64
 	Tolerance  float64
 	Power      float64
@@ -85,15 +86,47 @@ type OutputData struct {
 	Gammakf         float64
 }
 
+type OutputDataCaps struct {
+	Capacity  float64
+	Tolerance float64
+	Urab      float64
+
+	E                      float64
+	Area                   float64
+	D                      float64
+	GammaCt                float64
+	GammaSdop              float64
+	Cdash                  float64
+	Cdoubledash            float64
+	Ctripledash            float64
+	C0                     float64
+	A1, B1, A2, B2, A3, B3 float64
+	RealArea               float64
+	RealD                  float64
+}
+
 type ResistorJSON struct {
 	Resistance string `json:"resistance"`
 	Power      string `json:"power"`
 	Tolerance  string `json:"tolerance"`
 }
-type InputJSON struct {
+
+type CapacitorJSON struct {
+	Capacity  string `json:"capacity"`
+	Urab      string `json:"urab"`
+	Tolerance string `json:"tolerance"`
+}
+
+type InputJSONres struct {
 	Temperature float64        `json:"temperature"`
 	Material    int            `json:"material"`
 	Res         []ResistorJSON `json:"res"`
+}
+
+type InputJSONcaps struct {
+	Temperature float64         `json:"temperature"`
+	Material    int             `json:"material"`
+	Caps        []CapacitorJSON `json:"cap"`
 }
 
 func countSingleResistor(c *gin.Context) {
@@ -116,7 +149,7 @@ func countSingleResistor(c *gin.Context) {
 }
 
 func countArrOfRes(c *gin.Context) {
-	var arrResJSON InputJSON
+	var arrResJSON InputJSONres
 
 	body, err := io.ReadAll(c.Request.Body)
 	if err != nil {
@@ -145,10 +178,10 @@ func countArrOfRes(c *gin.Context) {
 		resistor.SetMaterialsForResistors(arrRes, resistor.GetMaterials()[arrResJSON.Material])
 	}
 
-	var outputData []OutputData
+	var outputData []OutputDataRes
 
 	for _, j := range arrRes {
-		outputData = append(outputData, OutputData{
+		outputData = append(outputData, OutputDataRes{
 			Resistance: j.GetResistance(),
 			Tolerance:  j.GetTolerance(),
 			Power:      j.GetPower(),
@@ -222,6 +255,68 @@ func countArrOfRes(c *gin.Context) {
 	c.IndentedJSON(200, outputData)
 }
 
+func countArrOfCaps(c *gin.Context) {
+	var arrCapsJSON InputJSONcaps
+
+	body, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	err = json.Unmarshal(body, &arrCapsJSON)
+	if err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	var arrCaps []capacitor.Capacitor
+	env := environment.InitEnvironment(arrCapsJSON.Temperature)
+	for _, j := range arrCapsJSON.Caps {
+		capacity, _ := strconv.ParseFloat(j.Capacity, 64)
+		tolerance, _ := strconv.ParseFloat(j.Tolerance, 64)
+		Urab, _ := strconv.ParseFloat(j.Urab, 64)
+		arrCaps = append(arrCaps, *capacitor.NewCapacitor(capacity, tolerance, Urab, capacitor.Materials[0], env))
+	}
+
+	if arrCapsJSON.Material < 0 || arrCapsJSON.Material > len(capacitor.Materials) {
+		capacitor.SetMaterialsForCapacitors(arrCaps, capacitor.Materials[0])
+	} else {
+		capacitor.SetMaterialsForCapacitors(arrCaps, capacitor.Materials[arrCapsJSON.Material])
+	}
+
+	var outputData []OutputDataCaps
+
+	for _, j := range arrCaps {
+		outputData = append(outputData, OutputDataCaps{
+			Capacity:  j.GetCapacity(),
+			Tolerance: j.GetTolerance(),
+			Urab:      j.GetUrab(),
+
+			E:           j.GetMaterial().Gete(),
+			Area:        j.GetAreaMoreThan5().GetArea(),
+			D:           j.GetAreaMoreThan5().Getd(),
+			GammaCt:     j.GetAreaMoreThan5().GetgammaCt(),
+			GammaSdop:   j.GetAreaMoreThan5().GetGammaSdop(),
+			Cdash:       j.GetAreaMoreThan5().GetCdash0(),
+			Cdoubledash: j.GetAreaMoreThan5().GetDdoubledash0(),
+			Ctripledash: j.GetCtripledash0(),
+			C0:          j.GetAreaMoreThan5().GetC0(),
+
+			A1: j.GetAreaMoreThan5().GetA1(),
+			B1: j.GetAreaMoreThan5().GetB1(),
+			A2: j.GetAreaMoreThan5().GetA2(),
+			B2: j.GetAreaMoreThan5().GetB2(),
+			A3: j.GetAreaMoreThan5().GetA3(),
+			B3: j.GetAreaMoreThan5().GetB3(),
+
+			RealArea: j.GetAreaMoreThan5().GetRealArea(),
+			RealD:    j.GetAreaMoreThan5().GetRealD(),
+		})
+	}
+	c.IndentedJSON(200, outputData)
+}
+
 type ResitsorNums struct {
 	Nums []string `form:"res" collection_format:"csv"`
 }
@@ -282,6 +377,7 @@ func RunServer() {
 	router.POST("/countResistor", countSingleResistor)
 	router.GET("/resistorMaterials", resistorMaterials)
 	router.POST("/arrOfRes", countArrOfRes)
+	router.POST("/arrOfCaps", countArrOfCaps)
 	router.GET("/", mainFraim)
 	router.GET("/resistors", resistorsQuery)
 	router.Run(":8080")
