@@ -62,10 +62,12 @@
 
 ```
 
+### Получение материалов резисторов по /resistorMaterials
+
 ### Пример запроса по /arrOfCaps
 ```json
 {
-    "temperature":70.0,
+    "temperature": 70.0,
     "material": 0,
     "cap":
     [
@@ -87,3 +89,5 @@
     ]
 }
 ```
+
+### Получение материалов конденсаторов по /capacitorMaterials

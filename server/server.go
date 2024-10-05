@@ -345,7 +345,7 @@ func mainFraim(c *gin.Context) {
 	})
 }
 
-type MaterialJSON struct {
+type MaterialJSONResistor struct {
 	Number                              int
 	Name                                string
 	SquareResistance                    float64
@@ -355,15 +355,41 @@ type MaterialJSON struct {
 }
 
 func resistorMaterials(c *gin.Context) {
-	var arrOfMaterials []MaterialJSON
+	var arrOfMaterials []MaterialJSONResistor
 	for i, j := range resistor.GetMaterials() {
-		arrOfMaterials = append(arrOfMaterials, MaterialJSON{
+		arrOfMaterials = append(arrOfMaterials, MaterialJSONResistor{
 			Number:                              i,
 			Name:                                j.GetName(),
 			SquareResistance:                    j.GetSquareResistance(),
 			PermissibleSpecificPowerDissipation: j.GetPermissibleSpecificPowerDissipation(),
 			TemperatureCoefficientOfResistance:  j.GetTemperatureCoefficientOfResistance(),
 			Senescence:                          j.GetSenescence(),
+		})
+	}
+	c.IndentedJSON(200, arrOfMaterials)
+}
+
+type MaterialJSONCapacitor struct {
+	Number     int
+	Name       string
+	Cud        float64
+	ElStrength float64
+	E          float64
+	Tgdelta    float64
+	Tke        float64
+}
+
+func capacitorMaterials(c *gin.Context) {
+	var arrOfMaterials []MaterialJSONCapacitor
+	for i, j := range capacitor.Materials {
+		arrOfMaterials = append(arrOfMaterials, MaterialJSONCapacitor{
+			Number:     i,
+			Name:       j.GetName(),
+			Cud:        j.GetCud(),
+			ElStrength: j.GetElStrength(),
+			E:          j.Gete(),
+			Tgdelta:    j.Getthdelta(),
+			Tke:        j.GetTKE(),
 		})
 	}
 	c.IndentedJSON(200, arrOfMaterials)
@@ -376,6 +402,7 @@ func RunServer() {
 	router.LoadHTMLGlob("./index/*")
 	router.POST("/countResistor", countSingleResistor)
 	router.GET("/resistorMaterials", resistorMaterials)
+	router.GET("/capacitorMaterials", capacitorMaterials)
 	router.POST("/arrOfRes", countArrOfRes)
 	router.POST("/arrOfCaps", countArrOfCaps)
 	router.GET("/", mainFraim)
