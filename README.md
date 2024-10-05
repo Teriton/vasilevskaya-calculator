@@ -61,3 +61,29 @@
 }
 
 ```
+
+### Пример запроса по /arrOfCaps
+```json
+{
+    "temperature":70.0,
+    "material": 0,
+    "cap":
+    [
+        {
+            "capacity": "4500",
+            "urab": "6.0",
+            "tolerance": "20"
+        },
+        {
+            "capacity": "400",
+            "urab": "6.0",
+            "tolerance": "20"
+        },
+        {
+            "capacity": "1700",
+            "urab": "6.0",
+            "tolerance": "20"
+        }
+    ]
+}
+```
