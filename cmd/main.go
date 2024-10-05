@@ -245,11 +245,8 @@ func main() {
 		*capacitor.NewCapacitor(1700, 6, 20, capacitor.GetHollowMaterial(), env),
 	}
 
-	capacitor.SetMaterialsForCapacitors(arrOfCups, capacitor.Materials[8])
-	capacitor.SetCtripledash0ForCapacitors(
-		arrOfCups,
-		capacitor.CalculateCtripledash0(arrOfCups),
-	)
+	capacitor.SetMaterialsForCapacitors(arrOfCups, capacitor.Materials[0])
+	capacitor.SetCtripledash0ForCapacitors(arrOfCups, arrOfCups[0].GetMaterial().GetCud())
 
 	for i, j := range arrOfCups {
 		fmt.Println("==============")
@@ -257,6 +254,7 @@ func main() {
 		fmt.Println("C: ", j.GetCapacity())
 		fmt.Println("Uраб: ", j.GetUrab())
 		fmt.Println("Точность: ", j.GetTolerance())
+		fmt.Println("e: ", j.GetMaterial().Gete())
 		fmt.Println("Площадь: ", j.GetAreaMoreThan5().GetArea())
 		fmt.Println("d: ", j.GetAreaMoreThan5().Getd())
 		fmt.Println("gammaCt: ", j.GetAreaMoreThan5().GetgammaCt())
@@ -271,7 +269,10 @@ func main() {
 		fmt.Println("B2: ", j.GetAreaMoreThan5().GetB2())
 		fmt.Println("A3: ", j.GetAreaMoreThan5().GetA3())
 		fmt.Println("B3: ", j.GetAreaMoreThan5().GetB3())
-		fmt.Println("Итоговая площадь: ", j.GetAreaMoreThan5().GetRealArea())
+		fmt.Println("Итоговая площадь: ", j.GetAreaMoreThan5().GetRealArea(), " мм^2")
+		fmt.Println("Итоговая толщина: ", j.GetAreaMoreThan5().GetRealD(), " мкм")
+		// fmt.Println("Площадь  1-5 мм^2: ", j.GetArea15().GetArea())
+		// fmt.Println("Коэфицциент для 1-5: ", j.GetArea15().GetK())
 	}
 
 }

@@ -1,6 +1,8 @@
 package capacitor
 
-import "math"
+import (
+	"math"
+)
 
 type AreaMoreThan5 struct {
 	d             float64
@@ -17,6 +19,7 @@ type AreaMoreThan5 struct {
 	middleLayerA3 float64
 	middleLayerB3 float64
 	realArea      float64
+	realD         float64
 }
 
 func (c *Capacitor) initAreaMoreThan5() {
@@ -33,10 +36,11 @@ func (c *Capacitor) initAreaMoreThan5() {
 		c.GetCapacity(),
 		c.GetAreaMoreThan5().GetGammaSdop(),
 		c.GetEnv().GetDaltaA(),
+		1,
 	)
-	c.areaMoreThan5.c0 = CalculateC0(c.GetAreaMoreThan5().GetCdash0(), c.GetAreaMoreThan5().GetDdoubledash0(), c.GetCtripledash0())
+	c.areaMoreThan5.c0 = c.GetMaterial().GetCud() //CalculateC0(c.GetAreaMoreThan5().GetCdash0(), c.GetAreaMoreThan5().GetDdoubledash0(), c.GetCtripledash0())
 	c.areaMoreThan5.area = CalculateArea(c.GetAreaMoreThan5().GetC0(), c.GetCapacity())
-	c.areaMoreThan5.topLayerA1 = TehnRound(CalculateTopLayerA1(c.GetAreaMoreThan5().GetArea()))
+	c.areaMoreThan5.topLayerA1 = CalculateTopLayerA1(c.GetAreaMoreThan5().GetArea())
 	c.areaMoreThan5.topLayerB1 = c.GetAreaMoreThan5().GetA1()
 	c.areaMoreThan5.bottomLayerA2 = CalculateBottomLayerA2(
 		c.GetAreaMoreThan5().GetA1(),
@@ -51,14 +55,15 @@ func (c *Capacitor) initAreaMoreThan5() {
 	)
 	c.areaMoreThan5.middleLayerB3 = c.GetAreaMoreThan5().GetA3()
 	c.areaMoreThan5.realArea = CalculateRealArea(c.GetAreaMoreThan5().GetA3(), c.GetAreaMoreThan5().GetB3())
+	c.areaMoreThan5.realD = CalculateRealD(c.GetMaterial().Gete(), c.GetAreaMoreThan5().GetC0())
 }
 
 func CalculateD(urab, kz, Epr float64) float64 {
-	d := 10 * ((urab * kz) / (Epr * 100))
-	if d < 0.4 {
-		return 0.4
-	}
-	return 10 * ((urab * kz) / (Epr * 100))
+	d := ((urab * kz) / (Epr * 100))
+	// if d < 0.4 {
+	// 	return 0.4
+	// }
+	return d
 }
 
 func CalculateGammaSdop(gammaC, gammaC0, gammaCt, gammaCst float64) float64 {
@@ -70,15 +75,15 @@ func CalculateGammaCt(t, TKE float64) float64 {
 }
 
 func CalculateCdash0(e, d float64) float64 {
-	return 0.0885 * (e / (d * math.Pow(10, -2)))
+	return 0.0885 * (e / d) * 10
 }
 
-func CalculateCdoubledash0(c, gammaSdop, deltaA float64) float64 { // пф/мм^2
-	return c * math.Pow((gammaSdop/100)/(2*deltaA*10), 2)
+func CalculateCdoubledash0(c, gammaSdop, deltaA, kf float64) float64 { // пф/мм^2
+	return c * math.Pow((gammaSdop/100)/(deltaA), 2) * (kf / math.Pow((1+kf), 2))
 }
 
 func CalculateC0(cdash0, cdoubledash0, ctripledash0 float64) float64 { // пф/мм^2
-	return math.Min(ctripledash0, math.Min(cdash0, cdoubledash0))
+	return math.Min(cdash0, cdoubledash0)
 }
 
 func CalculateArea(c0, capacity float64) float64 {
@@ -101,6 +106,10 @@ func CalculateMiddleLayerA3(a2, deltaA, ita float64) float64 {
 
 func CalculateRealArea(a3, b3 float64) float64 {
 	return a3 * b3
+}
+
+func CalculateRealD(e, c0 float64) float64 {
+	return 0.00885 * (e / c0) * 1000
 }
 
 // Getters
@@ -159,4 +168,8 @@ func (c *AreaMoreThan5) GetB3() float64 {
 
 func (c *AreaMoreThan5) GetRealArea() float64 {
 	return c.realArea
+}
+
+func (c *AreaMoreThan5) GetRealD() float64 {
+	return c.realD
 }

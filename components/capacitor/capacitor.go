@@ -14,6 +14,7 @@ type Capacitor struct {
 	material Material
 
 	areaMoreThan5 AreaMoreThan5
+	area15        Area15
 	ctripledash0  float64
 }
 
@@ -26,15 +27,15 @@ func NewCapacitor(capacity float64, urab float64, tolerance float64, material Ma
 
 	cap.env = env
 	cap.material = material
-	cap.ctripledash0 = 10000000
+	cap.ctripledash0 = 1000000000000000000
 
 	cap.autoCalculateInit()
-
 	return cap
 }
 
 func (c *Capacitor) autoCalculateInit() {
 	c.initAreaMoreThan5()
+	c.area15Init()
 }
 
 func TehnRound(num float64) float64 {
@@ -48,12 +49,12 @@ func CalculateCtripledash0(arrOfCaps []Capacitor) float64 {
 			smallestCapacitor = arrOfCaps[i]
 		}
 	}
-	return smallestCapacitor.GetCapacity() / smallestCapacitor.GetAreaMoreThan5().GetRealArea()
+	return smallestCapacitor.GetCapacity() / 0.01
 }
 
-func SetCtripledash0ForCapacitors(arrOfCaps []Capacitor, ctripledash0 float64) {
+func SetCtripledash0ForCapacitors(arrOfCaps []Capacitor, num float64) {
 	for i := range arrOfCaps {
-		(arrOfCaps)[i].SetCtripledash0(ctripledash0)
+		(arrOfCaps)[i].SetCtripledash0(num)
 	}
 }
 
@@ -95,4 +96,8 @@ func (c *Capacitor) GetEnv() *environment.Environment {
 }
 func (c *Capacitor) GetCtripledash0() float64 {
 	return c.ctripledash0
+}
+
+func (c *Capacitor) GetArea15() *Area15 {
+	return &c.area15
 }
