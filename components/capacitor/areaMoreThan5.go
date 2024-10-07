@@ -40,22 +40,22 @@ func (c *Capacitor) initAreaMoreThan5() {
 	)
 	c.areaMoreThan5.c0 = c.GetMaterial().GetCud() //CalculateC0(c.GetAreaMoreThan5().GetCdash0(), c.GetAreaMoreThan5().GetDdoubledash0(), c.GetCtripledash0())
 	c.areaMoreThan5.area = CalculateArea(c.GetAreaMoreThan5().GetC0(), c.GetCapacity())
-	c.areaMoreThan5.topLayerA1 = CalculateTopLayerA1(c.GetAreaMoreThan5().GetArea())
+	c.areaMoreThan5.topLayerA1 = TehnRound(CalculateTopLayerA1(c.GetAreaMoreThan5().GetArea()))
 	c.areaMoreThan5.topLayerB1 = c.GetAreaMoreThan5().GetA1()
-	c.areaMoreThan5.bottomLayerA2 = CalculateBottomLayerA2(
+	c.areaMoreThan5.bottomLayerA2 = TehnRound(CalculateBottomLayerA2(
 		c.GetAreaMoreThan5().GetA1(),
 		c.GetEnv().GetDaltaA(),
 		c.GetEnv().GetIta(),
-	)
+	))
 	c.areaMoreThan5.bottomLayerB2 = c.GetAreaMoreThan5().GetA2()
-	c.areaMoreThan5.middleLayerA3 = CalculateMiddleLayerA3(
+	c.areaMoreThan5.middleLayerA3 = TehnRound(CalculateMiddleLayerA3(
 		c.GetAreaMoreThan5().GetA2(),
 		c.GetEnv().GetDaltaA(),
 		c.GetEnv().GetIta(),
-	)
+	))
 	c.areaMoreThan5.middleLayerB3 = c.GetAreaMoreThan5().GetA3()
 	c.areaMoreThan5.realArea = CalculateRealArea(c.GetAreaMoreThan5().GetA3(), c.GetAreaMoreThan5().GetB3())
-	c.areaMoreThan5.realD = CalculateRealD(c.GetMaterial().Gete(), c.GetAreaMoreThan5().GetC0())
+	c.areaMoreThan5.realD = TehnRound(CalculateRealD(c.GetMaterial().Gete(), c.GetAreaMoreThan5().GetC0()))
 }
 
 func CalculateD(urab, kz, Epr float64) float64 {
@@ -109,7 +109,7 @@ func CalculateRealArea(a3, b3 float64) float64 {
 }
 
 func CalculateRealD(e, c0 float64) float64 {
-	return 0.00885 * (e / c0) * 1000
+	return 0.008854 * (e / c0) * 1000
 }
 
 // Getters

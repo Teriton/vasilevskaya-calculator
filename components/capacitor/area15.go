@@ -9,15 +9,15 @@ type Area15 struct {
 
 func (c *Capacitor) area15Init() {
 	c.area15.k = CalculateK(c.GetAreaMoreThan5().GetArea())
-	c.area15.area = CalculateArea15(c.GetCapacity(), c.GetArea15().GetK(), c.GetAreaMoreThan5().GetRealD())
+	c.area15.area = CalculateArea15(c.GetCapacity(), c.GetArea15().GetK(), c.GetAreaMoreThan5().GetRealD(), c.GetMaterial().Gete())
 }
 
 func CalculateK(s float64) float64 {
-	return 1.3785 - s*(0.175/2)
+	return (199.0 / 150.0) - s*(1.0/15.0)
 }
 
-func CalculateArea15(c, k, d float64) float64 {
-	return c / (0.0885 * k * (d / 1000))
+func CalculateArea15(c, k, d, e float64) float64 {
+	return (c * k * (d / 1000)) / (0.008854 * e)
 }
 
 // Getters

@@ -103,6 +103,9 @@ type OutputDataCaps struct {
 	A1, B1, A2, B2, A3, B3 float64
 	RealArea               float64
 	RealD                  float64
+
+	Area15  float64
+	Karea15 float64
 }
 
 type ResistorJSON struct {
@@ -312,6 +315,9 @@ func countArrOfCaps(c *gin.Context) {
 
 			RealArea: j.GetAreaMoreThan5().GetRealArea(),
 			RealD:    j.GetAreaMoreThan5().GetRealD(),
+
+			Area15:  j.GetArea15().GetArea(),
+			Karea15: j.GetArea15().GetK(),
 		})
 	}
 	c.IndentedJSON(200, outputData)

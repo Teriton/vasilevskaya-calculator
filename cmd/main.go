@@ -272,8 +272,8 @@ func main() {
 		fmt.Println("B3: ", j.GetAreaMoreThan5().GetB3())
 		fmt.Println("Итоговая площадь: ", j.GetAreaMoreThan5().GetRealArea(), " мм^2")
 		fmt.Println("Итоговая толщина: ", j.GetAreaMoreThan5().GetRealD(), " мкм")
-		// fmt.Println("Площадь  1-5 мм^2: ", j.GetArea15().GetArea())
-		// fmt.Println("Коэфицциент для 1-5: ", j.GetArea15().GetK())
+		fmt.Println("Площадь  1-5: ", j.GetArea15().GetArea(), "мм^2")
+		fmt.Println("Коэфицциент для 1-5: ", j.GetArea15().GetK())
 	}
 	server.RunServer()
 }
