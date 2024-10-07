@@ -279,7 +279,7 @@ func countArrOfCaps(c *gin.Context) {
 		capacity, _ := strconv.ParseFloat(j.Capacity, 64)
 		tolerance, _ := strconv.ParseFloat(j.Tolerance, 64)
 		Urab, _ := strconv.ParseFloat(j.Urab, 64)
-		arrCaps = append(arrCaps, *capacitor.NewCapacitor(capacity, tolerance, Urab, capacitor.Materials[0], env))
+		arrCaps = append(arrCaps, *capacitor.NewCapacitor(capacity, Urab, tolerance, capacitor.Materials[0], env))
 	}
 
 	if arrCapsJSON.Material < 0 || arrCapsJSON.Material > len(capacitor.Materials) {
