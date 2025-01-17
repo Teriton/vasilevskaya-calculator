@@ -34,7 +34,7 @@ const (
 )
 
 type ResistorMaterial struct {
-	Name                                Parameter
+	Name                                ParameterMain[string]
 	SquareResistance                    Parameter
 	PermissibleSpecificPowerDissipation Parameter
 	TemperatureCoefficientOfResistance  Parameter

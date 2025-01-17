@@ -5,7 +5,7 @@ import "github.com/shpakunya/pkg/components"
 // TODO Добавить обозначенияы
 func (ResistorController) GenerateMaterial(SquareResistance, PermissibleSpecificPowerDissipation, TemperatureCoefficientOfResistance, Senescence float64) components.ResistorMaterial {
 	return components.ResistorMaterial{
-		Name: "Custom",
+		Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Custom"},
 		SquareResistance: components.Parameter{Name: "Квадратное сопротивление", Symbol: "ρкв",
 			Unit: "Ом/кв", Value: SquareResistance},
 		PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -20,7 +20,7 @@ func (ResistorController) GenerateMaterial(SquareResistance, PermissibleSpecific
 func (ResistorController) GetMaterials() []components.ResistorMaterial {
 	return []components.ResistorMaterial{
 		{
-			Name: "Кермет К50-С", // 0
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Кермет К50-С"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 10000.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -31,7 +31,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 0},
 		},
 		{
-			Name: "Хром", // 0
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Хром"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 500.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -42,7 +42,8 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 0},
 		},
 		{
-			Name: "Тантал", // 0
+
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Тантал"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 100.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -53,7 +54,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 0},
 		},
 		{
-			Name: "Нихром", // 0
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Нихром"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 300.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -64,7 +65,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 0},
 		},
 		{
-			Name: "Сплав МЛТ3-М",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав МЛТ3-М"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 500.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -75,7 +76,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 0.5},
 		},
 		{
-			Name: "Кермет К-20С",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Кермет К-20С"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 3000.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -86,7 +87,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 0},
 		},
 		{
-			Name: "Сплав 1004",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 1004"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 50000.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -97,7 +98,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 2.0},
 		},
 		{
-			Name: "Сплав 1714",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 1714"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 500.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -108,7 +109,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 1.0},
 		},
 		{
-			Name: "Сплав 2005",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 2005"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 500000.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -119,7 +120,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 2.0},
 		},
 		{
-			Name: "Сплав 2310",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 2310"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 50000.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -130,7 +131,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 2.0},
 		},
 		{
-			Name: "Сплав 3001",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 3001"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 3000.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -141,7 +142,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 0.5},
 		},
 		{
-			Name: "Сплав 3710",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 3710"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 3000.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -152,7 +153,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 0.5},
 		},
 		{
-			Name: "Сплав 4206",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 4206"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 1000.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -163,7 +164,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 0.5},
 		},
 		{
-			Name: "Сплав 4400",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 4400"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 5000.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -174,7 +175,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 0},
 		},
 		{
-			Name: "Сплав 4800",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 4800"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 1000.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -185,7 +186,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 1},
 		},
 		{
-			Name: "Сплав 5006",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 5006"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 20.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -196,7 +197,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 2},
 		},
 		{
-			Name: "Сплав 5402",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 5402"},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 100.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -207,7 +208,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 1},
 		},
 		{
-			Name: "Сплав 5406 К",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 5406 "},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 500.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
@@ -218,7 +219,7 @@ func (ResistorController) GetMaterials() []components.ResistorMaterial {
 				Unit: "(1 Вт/см^2 при 85 °C), %", Value: 1},
 		},
 		{
-			Name: "Сплав 5406 Н",
+			Name: components.ParameterMain[string]{Name: "Название материала", Symbol: "", Unit: "", Value: "Сплав 5406 "},
 			SquareResistance: components.Parameter{Name: "Квадратное сопротивление",
 				Unit: "Ом/кв", Value: 500.0},
 			PermissibleSpecificPowerDissipation: components.Parameter{Name: "Допустимая удельная мощность рассеивания",
