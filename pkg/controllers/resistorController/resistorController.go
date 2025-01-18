@@ -6,7 +6,12 @@ import (
 	"github.com/shpakunya/pkg/components"
 )
 
+type DataController interface {
+	GetMaterials() []components.ResistorMaterial
+}
+
 type ResistorController struct {
+	DataController
 }
 
 func (ResistorController) NewResistor(resistance float64, tolerance float64, power float64,
@@ -32,7 +37,7 @@ func autoCalculateInit(resistor *components.Resistor) {
 	resistor.GammaRdelta = components.Parameter{Name: "Погрешность воспроизведения геометрических разыеров резис­тора", Symbol: "γRΔ",
 		Unit: "%", Value: countGammaRDelta(resistor.Tolerance.Value, resistor.Env.GammaRokv.Value,
 			resistor.Env.GammaRcontact.Value, resistor.Material.Senescence.Value, resistor.GammaRt.Value)}
-	resistor.FormOfResistor = CountFormOfResistor(resistor.FormFactor.Value)
+	resistor.FormOfResistor = countFormOfResistor(resistor.FormFactor.Value)
 
 	// Additional
 	initRectange(resistor)
@@ -50,7 +55,7 @@ func countGammaRt(tkr float64, temperature float64) float64 {
 	return math.Abs((tkr * math.Pow(10, -4) * (temperature - 20)) * 100)
 }
 
-func CountFormOfResistor(formFactor float64) components.Form {
+func countFormOfResistor(formFactor float64) components.Form {
 	switch {
 	case formFactor > 0.1 && formFactor < 10:
 		return components.RectangleForm
