@@ -21,8 +21,8 @@ type Resistor struct {
 
 	Ccp CCP
 	// Trim
-	trimLength TrimLength
-	trimWide   TrimWide
+	TrimLength TrimLength
+	TrimWide   TrimWide
 }
 
 type Form string
@@ -58,15 +58,15 @@ type Rectangle struct {
 }
 
 type Meander struct {
-	numberOfLinks  Parameter
-	meanderXLength Parameter
-	meanderYLength Parameter
-	meanderArea    Parameter
+	NumberOfLinks  Parameter
+	MeanderXLength Parameter
+	MeanderYLength Parameter
+	MeanderArea    Parameter
 }
 
 type CCP struct {
-	bpCCP     Parameter
-	bdeltaCCP Parameter
+	BpCCP     Parameter
+	BdeltaCCP Parameter
 }
 
 type TrimWide struct {
