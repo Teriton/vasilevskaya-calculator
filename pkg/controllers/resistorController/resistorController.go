@@ -41,6 +41,9 @@ func autoCalculateInit(resistor *components.Resistor) {
 
 	// Additional
 	initRectange(resistor)
+	ccpInit(resistor)
+	trimWideInit(resistor)
+	initTrimLength(resistor)
 }
 
 func countFormFactor(resistance float64, squareResistance float64) float64 {
